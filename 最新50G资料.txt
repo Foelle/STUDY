@@ -1,0 +1,167 @@
+《测试开发工程师职业发展与求职指南》 
+链接：https://pan.baidu.com/s/1Ga1k3vz56TBL7hrhpuRWEw 
+提取码：a6zo
+
+《Python-环境及基础语法》
+链接：https://pan.baidu.com/s/151LHRtvwEDE40OHELAjVaw
+提取码：up3h
+
+《Python-pageobject进行web自动化测试（下）》
+  链接：https://pan.baidu.com/s/1P6-mxjBl8HYLILA79hb4jg
+  提取码：bykn
+
+《JMeter5进行微信公众号接口功能测试》
+  链接：https://pan.baidu.com/s/1csA4BKiQT4qLRgSvX1fCoQ
+  提取码：vlhd
+
+《用python做【雪球】网站的接口自动化-unittest》
+  链接：https://pan.baidu.com/s/1IyRGCNa_KUHnvyQSTdht7w
+  提取码：4w0d
+
+《使用python进行【雪球】网站的接口自动化-pytest》
+   链接：https://pan.baidu.com/s/1gL8idznezgTrT5DWyHAMAA
+  提取码：e9ku
+
+《使用python进行【雪球】网站的接口自动化-allure》
+   链接：https://pan.baidu.com/s/1bFb4wCM8DCZQWcrzgU5KiQ
+  提取码：e3et
+
+《BAT软件测试岗位面试要点剖析》
+  链接：https://pan.baidu.com/s/1-6Be0pNAKeRj57AYMMyaJQ
+  提取码：elym
+
+《百度高级测试经理的职业成长之路》
+  链接：https://pan.baidu.com/s/1ljGiiroRqPtyU_IAj4pqCw
+  提取码：uycs
+
+《软件测试工程师高段位进阶之路》
+   链接：https://pan.baidu.com/s/1hi1EwZoWUNtNSWPLO_ziEg
+   提取码：pbsq
+
+《面试BAT，你需要具备哪些技能？》
+  链接：https://pan.baidu.com/s/1NuUCXtm5JXQzU4BpypkaNg
+  提取码：720d
+
+《手机浏览器、webview、微信小程序自动化软件测试》
+  链接：https://pan.baidu.com/s/10SvaOAWnA_s10h_yqgUeig
+  提取码：wnov
+
+《如何从零开始高效的做好兼容性测试》
+  链接：https://pan.baidu.com/s/1IgIfFuhDd1oyIYf5T6EW2Q
+  提取码：uyy0
+
+《Charles接口数据拦截与篡改》
+  链接：https://pan.baidu.com/s/1jf8j2UOLJaA6QAQjdypq2A
+  提取码：ssmc
+
+《Appium自动化测试-常用元素定位方法》
+  链接：https://pan.baidu.com/s/1wj4c81RUzi-NgEVgS2xA8Q
+  提取码：51gd
+
+《兼容性软件测试与自建测试实验室（中）》
+  链接：https://pan.baidu.com/s/1Gej5uBEfL7XaH-HSOih4ew
+  提取码：icqq
+
+《Junit测试框架-常用注解及参数化》
+  链接：https://pan.baidu.com/s/1z2BJ-zmxzVMKd6p_73q1Gw
+  提取码：9y2a
+
+《Jenkins调用企业微信发信息》
+  链接：https://pan.baidu.com/s/1ASLx-uXj8uB4Tzkf0FvlwA
+  提取码：1t60
+
+《玩转Charles进阶使用》
+  链接：https://pan.baidu.com/s/1ImOUUtRQAt-Plz0i-30Vhg
+  提取码：y1nf
+
+《Android自动化测试用例编写与元素定位交互》
+  链接：https://pan.baidu.com/s/1bJlHtrgXT5T3m2yu29wd1Q
+  提取码：a7ps
+
+《面试官最爱问的兼容性软件测试》
+  链接：https://pan.baidu.com/s/1LEjt6QY_ULcJGgjusNaDLg
+  提取码：87lq
+
+《Junit结合下一代测试报告框架Allure2》
+  链接：https://pan.baidu.com/s/1PJ5nUXgcrWLP8GzKuIuzkw
+  提取码：m1sc
+
+《Fiddler抓包工具在接口中的使用》
+  链接：https://pan.baidu.com/s/1Z8CexYY2IbYdQmlyclzp6w
+  提取码：jm10
+
+
+《2019年软件测试职业发展公开课（五）》
+链接：https://pan.baidu.com/s/1gUZ5apXsYLYNSmWFZu93kg
+提取码：w6pf
+
+
+《Charles抓包工具进行接口测试》
+链接：https://pan.baidu.com/s/10y_STnsVhB2A_BpW7ttaHA
+提取码：79c0
+
+
+《Postman做接口自动化测试》
+链接：https://pan.baidu.com/s/1vpxP8Se29lhzK2GzvbHQ-A
+
+提取码：unwm
+
+
+《JMeter开发性能测试脚本》
+链接：https://pan.baidu.com/s/10OCgGXmUhCxqHvK0AVUqSw
+提取码：uj9f
+
+
+《Python-数据结构字典、列表、集合》
+链接：https://pan.baidu.com/s/1DCaC3uRMSgSjYT33C1oa-Q
+提取码：zye0
+
+《Python-函数及高级特性》
+链接：https://pan.baidu.com/s/1dyi3kcfw3BnFFH_z3gcDMg
+提取码：2k19
+
+《Fiddler进行接口功能安全测试》
+链接：https://pan.baidu.com/s/1zxTZDBghjUdGsnG7jRECKg
+提取码：fz99
+
+《Python-文件处理与数据驱动》
+链接：https://pan.baidu.com/s/1aFaAkytoj9a2HODDq-MhoQ
+提取码：j5ra
+
+《接口测试-企业微信实战》
+链接：https://pan.baidu.com/s/1k3ejTvURqR1dXdoi5MQRCg
+提取码：s8he
+
+
+《Python-日志管理及在测试中的应用》
+链接：https://pan.baidu.com/s/1F_FHyExuvsYNmRs1woCHkg
+提取码：67we
+
+
+《Python-jsonSchema和契约测试》
+链接：https://pan.baidu.com/s/19DYeMUu01DiHlai9AU_jCw
+提取码：1itb
+
+
+《测试mock,stub在实际的应用》
+链接：https://pan.baidu.com/s/12Ti6WDfTL0ARw5SaVtxRag
+提取码：rkn6
+
+《测试用例怎么说才全面？》
+链接：https://pan.baidu.com/s/1a4YKx6UYUrAZGptyjKOcJQ
+提取码：mzxq
+
+
+《软件测试的高薪秘诀》
+链接：https://pan.baidu.com/s/1l-EIcqlx7c0Up64z4h0uWQ
+提取码：4ue5
+
+
+《2019软件测试行业调查报告解读》
+链接：https://pan.baidu.com/s/1xGO3k7RWWTdeVZ8JVlonBw
+提取码：zrqv
+
+
+《简历发了，为什么没有面试邀约？》
+链接：https://pan.baidu.com/s/1EZjeE1wg49VbXzWatYkObQ
+提取码：3adq
