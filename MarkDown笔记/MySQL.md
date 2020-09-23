@@ -107,7 +107,7 @@ SHOW TABLE STATUS from mysql LIKE 'mysql%'\G;
 
 ### 二、创建数据库并插入数据
 
-#### 1.通用语法：
+#### 1.基本语法：
 
 ```mysql
 #创建数据库
@@ -156,7 +156,7 @@ CREATE TABLE mysql_tab1
 
 #### 3.数据类型：
 
- 暂时参考：https://www.runoob.com/mysql/mysql-data-types.html
+ [点击查看](https://www.runoob.com/mysql/mysql-functions.html)
 
 ### 三、SQL的约束
 
@@ -232,8 +232,10 @@ ALTER City DROP DEFAULT;
 
 ##### （3）唯一约束
 
+设置UNIQUE约束，该表中的指定列的值不能有重复值，否则插入数据时INSERT失败
+
 ```mysql
-#该表中的指定列的值不能有重复值，否则插入数据时INSERT失败
+#基本语法
 UNIQUE(列名)
 #重命名UNIQUE约束且定义多个列的UNIQUE约束
 CONSTRAINT uc_PersonID UNIQUE (P_Id,LastName)
@@ -269,4 +271,347 @@ MODIFY Age int NULL;
 ```
 
 ##### （5）外键约束
+
+一个表可以有多个外键，每个外键必须 REFERENCES (参考) 另一个表的主键，被外键约束的列，取值必须在它参考的列中有对应值。
+
+```mysql
+#实例
+CREATE TABLE Orders
+(
+O_Id int NOT NULL,
+OrderNo int NOT NULL,
+P_Id int,
+PRIMARY KEY (O_Id),
+FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
+);
+#"Orders" 表中的 "P_Id" 列指向 "Persons" 表中的 "P_Id" 列
+#"Persons" 表中的 "P_Id" 列是 "Persons" 表中的 PRIMARY KEY
+#"Orders" 表中的 "P_Id" 列是 "Orders" 表中的 FOREIGN KEY
+
+#重命名且定义多个列的 FOREIGN KEY 约束
+CREATE TABLE Orders
+(
+O_Id int NOT NULL,
+OrderNo int NOT NULL,
+P_Id int,
+PRIMARY KEY (O_Id),
+CONSTRAINT fk_PerOrders FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
+);
+```
+
+```mysql
+#表已被创建
+ALTER TABLE Orders
+ADD FOREIGN KEY (P_Id) REFERENCES Persons(P_Id);
+#表已创建，重命名且定义多个
+ALTER TABLE Orders
+ADD CONSTRAINT fk_PerOrders
+FOREIGN KEY (P_Id) REFERENCES Persons(P_Id);
+#撤销FOREIGN KEY约束
+ALTER TABLE Orders
+DROP FOREIGN KEY fk_PerOrders;
+```
+
+### 四、SELECT语句详解
+
+#### 1.基础SELECT语句
+
+SELECT语句用于从数据库选取数据。
+
+```mysql
+#基本语法
+SELECT 列名1,列名2 FROM 表名字 
+[WHERE Clause]
+[LIMIT number][OFFSET M]
+#实例
+SELECT * FROM employee;
+SELECT name,age FROM employee;
+```
+
+WHERE 语句来包含任何条件， LIMIT 属性来设定返回的记录数，OFFSET指定SELECT语句开始查询的数据偏移量。默认情况下偏移量为0。
+
+#### 2.SELECT DISTING语句
+
+SELECT DISTINCT 语句用于返回唯一不同的值，即去掉列的重复值，列出不同的值。
+
+```mysql
+#基本语法
+SELECT DISTINCT 列名1,列名2 FROM 表名;
+#实例
+SELECT DISTINCT country FROM Websites;
+```
+
+#### 3.WHERE子句和AND&OR运算符
+
+##### （1）WHERE子句
+
+WHERE 子句用于提取那些满足指定条件的记录。
+
+```mysql
+#基本语法
+SELECT 列名1, field2 FROM 表名1, table_name2
+[WHERE condition1 [AND [OR]] condition2;
+```
+
+WHERE 子句中可以指定任何条件，可以使用 AND 或者 OR 指定一个或多个条件，也可以运用于 SQL 的 DELETE 或者 UPDATE 命令。WHERE类似于是if语句，根据 MySQL 表中的字段值来读取指定的数据。
+
+**运算符列表**：
+
+| 运算符  | 描述                                                         |
+| ------- | ------------------------------------------------------------ |
+| =       | 等号，检测两个值是否相等，如果相等返回true                   |
+| <>,!=   | 不等于，检测两个值是否相等，如果不相等返回true               |
+| >       | 大于号，检测左边的值是否大于右边的值, 如果左边的值大于右边的值返回true |
+| <       | 小于号，检测左边的值是否小于右边的值, 如果左边的值小于右边的值返回true |
+| >=      | 大于等于号，检测左边的值是否大于或等于右边的值, 如果左边的值大于或等于右边的值返回true |
+| <=      | 小于等于号，检测左边的值是否小于或等于右边的值, 如果左边的值小于或等于右边的值返回true |
+| BETWEEN | 在某个范围内                                                 |
+| LIKE    | 搜索某种模式                                                 |
+| IN      | 指定对某个列的多个可能值                                     |
+
+```mysql
+#查找工资为3500的员工
+SELECT * from employee WHERE salary=3500;
+
+#使用 BINARY 关键字来设定 WHERE 子句的字符串比较是区分大小写的
+SELECT * from employee WHERE BINARY in_dpt='dpt1'; //有数据显示
+SELECT * from employee WHERE BINARY in_dpt='DPT1'; //该查询无数据显示
+```
+
+##### （2）AND&OR运算符
+
+**AND运算符实例**
+
+```mysql
+#筛选出从 "Websites" 表中选取国家为 "CN" 且alexa排名大于 "50" 的所有网站
+SELECT * FROM Websites
+WHERE country='CN' AND alexa > 50;
+
+#筛选出 age 大于 25，且 age 小于 30,包含25和30
+SELECT name,age FROM employee 
+WHERE age BETWEEN 25 AND 30;
+```
+
+**OR运算符实例**
+
+```mysql
+#筛选出 age 小于 25，或 age 大于 30
+SELECT name,age FROM employee 
+WHERE age<25 OR age>30;
+```
+
+**结合AND&OR**
+
+```mysql
+#"Websites" 表中选取 alexa 排名大于 "15" 且国家为 "CN" 或 "USA" 的所有网站
+SELECT * FROM Websites
+WHERE alexa > 15 AND (country='CN' OR country='USA');
+```
+
+#### 4.IN & NOT IN操作符
+
+IN 操作符允许您在 WHERE 子句中规定多个值， **IN** 和 **NOT IN** 用于筛选“在”或"不在"某个范围内的结果
+
+```mysql
+#基本语法
+SELECT column_name(s) FROM table_name
+WHERE column_name IN (value1,value2,...);
+
+#IN的实例
+#查询在 dpt3 或 dpt4 的人
+SELECT name,age,phone,in_dpt FROM employee 
+WHERE in_dpt IN ('dpt3','dpt4');
+#转换成用 '=' 实现
+SELECT name,age,phone,in_dpt FROM employee 
+WHERE in_dpt='dpt3'OR in_dpt='dpt4';
+
+#NOT IN的实例
+#查询出了不在 dpt1 也不在 dpt3 的人：
+SELECT name,age,phone,in_dpt FROM employee 
+WHERE in_dpt NOT IN ('dpt1','dpt3');
+```
+
+#### 5.通配符
+
+##### （1）LIKE子句
+
+LIKE 操作符用于在 WHERE 子句中搜索列中的指定模式
+
+```mysql
+#基本语法
+SELECT field1, field2,...fieldN FROM table_name
+WHERE field1 LIKE condition1 [AND [OR]] filed2 = 'somevalue'
+
+#查找首字母为J的人
+SELECT name,age,phone FROM employee 
+WHERE name LIKE 'J%';
+
+#查找出了 1101 开头的 6 位数电话号码
+SELECT name,age,phone FROM employee 
+WHERE phone LIKE '1101__';
+```
+
+LIKE通常与 _ 、%一同使用，类似于一个元字符的搜索，使用AND或OR指定一个或多个条件，DELETE或UPDATE命令使用WHERE...LIKE子句来指定条件。
+
+##### (2) [charlist] 通配符
+
+MySQL中使用REGEXP或NOT REGEXP运算符（或RLIKE和NOT RLIKE）来操作正则表达式
+
+```mysql
+#查找name开头以“J”、"A"或"s"开头的所有员工：
+SELECT * FROM employee 
+WHERE name REGEXP '^[JAs]';
+
+#查找以A到H字母开头的员工：
+SELECT * FROM employee
+WHERE name REGEXP '^[A-H]';
+
+#查找不以A到H字母开头的员工：
+SELECT * FROM employee
+WHERE name REGEXP '^[^A-H]';
+
+SELECT * FROM employee
+WHERE name NOT REGEXP '^[A-H]';
+```
+
+#### 6.排序ORDER BY
+
+ORDER BY使用 ASC 或 DESC 关键字来设置查询结果是按升序或降序排列。 默认情况下，它是按升序排列，使用WHERE...LIKE子句来设置条件。
+
+```mysql
+#基本语法
+SELECT field1, field2,...fieldN FROM table_name1, table_name2...
+ORDER BY field1 [ASC [DESC][默认 ASC]], [field2...] [ASC [DESC][默认 ASC]]
+
+#按照salary降序排列
+SELECT name,age,salary,phone FROM employee 
+ORDER BY salary DESC;
+
+#按照聘用时间升序排列
+SELECT name,age,salary,phone FROM employee 
+ORDER BY employdate;
+```
+
+ORDER多列排序时，先按照第一个column name排序，再按照第二个column name排序。第一个column name同属时，按照第二个column name排序。其中**desc** 或者 **asc** 只对它紧跟着的那一个列名有效，其他不受影响，仍然是默认的升序。
+
+```mysql
+#多列排序
+#employdate降序排列，salary升序排列
+SELECT name,age,salary,phone FROM employee 
+ORDER BY employdate desc,salary;
+```
+
+#### 7.内置函数
+
+[点击查看详细函数列表](https://www.runoob.com/mysql/mysql-functions.html)
+
+##### 常用的内置函数
+
+| 函数名 | COUNT | SUM  | AVG      | MAX    | MIN    |
+| ------ | ----- | ---- | -------- | ------ | ------ |
+| 作用   | 计数  | 求和 | 求平均数 | 最大数 | 最小数 |
+
+其中 **COUNT** 函数可用于任何数据类型(因为它只是计数)，而 **SUM** 、**AVG** 函数都只能对数字类数据类型做计算，**MAX** 和 **MIN** 可用于数值、字符串或是日期时间数据类型。
+
+```mysql
+#计算出salary的最大值、最小值，其中AS关键词给最大值重命名为max_salary
+SELECT MAX(salary) AS max_salary,
+MIN(salary) FROM employee;
+```
+
+#### 8.分组GROUP BY和HAVING子句
+
+##### （1）GROUP BY
+
+**GROUP BY** 语句根据一个或多个列对结果集进行分组，在分组的列上我们可以使用 COUNT, SUM, AVG,等函数。
+
+```mysql
+#基本语法
+SELECT column_name, function(column_name) 
+FROM table_name
+WHERE column_name operator value
+GROUP BY column_name;
+
+#统计access_log各个site_id的访问量
+SELECT site_id, SUM(access_log.count) AS nums
+FROM access_log GROUP BY site_id;
++----------+----------+
+| site_id  |   nums   |
++--------+------------+
+|        1 |       275|
+|        2 |        10|
+|        3 |       521|
++--------+------------+
+3 rows in set (0.01 sec)
+```
+
+**WITH ROLLUP** 可以实现在分组统计数据基础上再进行相同的统计（SUM,AVG,COUNT…）
+
+```mysql
+#将以上的数据表按名字进行分组，再统计每个人登录的次数
+#其中记录 NULL 表示所有人的登录次数
+SELECT name, SUM(singin) as singin_count 
+FROM  employee_tbl 
+GROUP BY name WITH ROLLUP;
++--------+--------------+
+| name   | singin_count |
++--------+--------------+
+| 小丽   |             2|
+| 小明   |             7|
+| 小王   |             7|
+| NULL   |            16|
++--------+--------------+
+4 rows in set (0.00 sec)
+
+
+#coalesce设置取代NULL的名称
+#如果a==null,则选择b；如果b==null,则选择c；
+#如果a!=null,则选择a；如果a b c 都为null ，则返回为null（没意义）
+select coalesce(a,b,c);
+
+SELECT coalesce(name, '总数'), SUM(singin) as singin_count 
+FROM  employee_tbl 
+GROUP BY name WITH ROLLUP;
++--------------------------+--------------+
+| coalesce(name, '总数') | singin_count |
++--------------------------+--------------+
+| 小丽                   |            2 |
+| 小明                   |            7 |
+| 小王                   |            7 |
+| 总数                   |           16 |
++--------------------------+--------------+
+4 rows in set (0.01 sec)
+```
+
+##### （2）HAVING子句
+
+内容待定，需要参考《MySQL必知必会》这本书
+
+#### 8.子查询
+
+```mysql
+#处理多个表时，子查询只有在结果来自一个表时才有用
+#员工信息储存在 employee 表中，但工程信息储存在 project 表中
+#查询名为 "Tom" 的员工所在部门做了几个工程
+SELECT of_dpt,COUNT(proj_name) AS count_project 
+FROM project GROUP BY of_dpt
+HAVING of_dpt IN
+(SELECT in_dpt FROM employee WHERE name='Tom');
+#第二个 SELECT 语句将返回一个集合的数据形式，然后被第一个 SELECT 语句用 in 进行判断
+```
+
+
+
+#### 9.连接查询
+
+```mysql
+#连接的基本思想是把两个或多个表当作一个新的表来操作
+#显示两个表或多个表中的数据
+
+#使用JOIN ON语法，查询各员工所在部门的人数
+SELECT id,name,people_num
+FROM employee JOIN department
+ON employee.in_dpt = department.dpt_name
+ORDER BY id;
+```
 
