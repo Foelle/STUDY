@@ -1,4 +1,4 @@
-## MySQL
+## MySQL基础
 
 ### 一、MySQL管理
 
@@ -851,12 +851,208 @@ SELECT * FROM employee;
 LOAD DATA INFILE '/var/lib/mysql-files/SQL6/in.txt' INTO TABLE employee;
 ```
 
-![img](https://doc.shiyanlou.com/document-uid600404labid76timestamp1529104481426.png)
+<img src="https://doc.shiyanlou.com/document-uid600404labid76timestamp1529104481426.png" alt="img" style="zoom:75%;" />
 
 #### 4.导出
 
+```mysql
+#导出的基本语句
+SELECT 列1,列2 INTO OUTFILE  '文件路径和文件名' FROM 表名字;
+#语句中 “文件路径” 之下不能已经有同名文件。
+```
 
+```mysql
+#将employee表的数据导出到指定目录并命名为out.txt
+SELECT * INTO OUTFILE '/var/lib/mysql-files/out.txt' FROM employee;
+```
+
+在Linux系统中，可以使用 gedit 可以查看导出文件 `/var/lib/mysql-files/out.txt` 的内容，或者在终端直接`sudo cat /var/lib/mysql-files/out.txt`命令查看。
 
 #### 5.备份
 
+**备份与导出**的**区别**：导出的文件只是保存数据库中的数据；而备份，则是把数据库的结构，包括数据、约束、索引、视图等全部另存为一个文件。
+
+**mysqldump** 是 MySQL 用于备份数据库的实用程序。它主要产生一个 SQL 脚本文件，其中包含从头重新创建数据库所必需的命令 CREATE TABLE INSERT 等。
+
+```bash
+# Ctrl+D 退出 MySQL 控制台,再在终端中运行
+mysqldump -u root 数据库名 > 备份文件名;   #备份整个数据库
+
+mysqldump -u root 数据库名 表名字 > 备份文件名;  #备份整个表
+```
+
+```bash
+#备份mysql_shiyan
+cd /home/shiyanlou
+mysqldump -u root mysql_shiyan > bak.sql;
+```
+
+<img src="https://doc.shiyanlou.com/MySQL/sql-06-07.png" alt="img" style="zoom:80%;" />
+
 #### 6.恢复
+
+```mysql
+#第一种
+#把MySQL-06.sql 文件中保存的mysql_shiyan数据库恢复
+source /tmp/SQL6/MySQL-06.sql  
+
+#第二种
+CREATE DATABASE test;  #新建一个名为test的数据库
+
+#退出mysql，在终端输入命令
+mysql -u root test < bak.sql
+
+mysql -u root;
+use test  # 连接数据库 test
+SHOW TABLES;  # 查看 test 数据库的表
+SELECT * FROM employee; #查看employee表的恢复情况
+```
+
+#### 7.总结概念
+
+- 索引：可以加快查询速度
+- 视图：是一种虚拟存在的表
+- 导入：从文件中导入数据到表
+- 导出：从表中导出到文件中
+- 备份：mysqldump 备份数据库到文件
+- 恢复：从文件恢复数据库
+
+## MySQL基础习题
+
+**实验二**：新建一个名为 library 的数据库，包含 book、reader 两张表，根据自己的理解安排表的内容并插入数据。
+
+```mysql
+create database library;
+use library;
+
+create table book(
+  book_id int primary key,
+  book_name varchar(50) not null
+);
+
+create table reader(
+  reader_id int primary key,
+  reader_name varchar(50) not null
+);
+```
+
+**实验三**：构建一个简易的成绩管理系统的数据库，来记录几门课程的学生成绩。数据库中有三张表分别用于记录学生信息、课程信息和成绩信息。
+
+<img src="https://doc.shiyanlou.com/document-uid370051labid48timestamp1490234173345.png" alt="img" style="zoom: 67%;" />![img](https://doc.shiyanlou.com/document-uid370051labid48timestamp1490234378903.png)
+
+<img src="https://doc.shiyanlou.com/document-uid370051labid48timestamp1490234378903.png" alt="img" style="zoom:75%;" />
+
+<img src="https://doc.shiyanlou.com/document-uid370051labid48timestamp1490234181565.png" alt="img" style="zoom:75%;" />
+
+**要求**：
+
+1.MySQL 服务处于运行状态
+
+2.新建数据库的名称为 gradesystem
+
+3.gradesystem 包含三个表：student、course、mark；
+
+- student 表包含 3 列：sid(主键)、sname、gender；
+- course 表包含 2 列：cid(主键)、cname；
+- mark 表包含 4 列：mid(主键)、sid、cid、score ，注意与其他两个表主键之间的关系。
+- 建立表时注意 id 自增和键约束
+- 每个表插入语句可通过一条语句完成
+
+```bash
+sudo service mysql start
+mysql -u root
+```
+
+```mysql
+CREATE DATABASE gradesystem;
+
+use gradesystem
+
+CREATE TABLE student(
+    sid int NOT NULL AUTO_INCREMENT,
+    sname varchar(20) NOT NULL,
+    gender varchar(10) NOT NULL,
+    PRIMARY KEY(sid)
+    );
+
+CREATE TABLE course(
+    cid int NOT NULL AUTO_INCREMENT,
+    cname varchar(20) NOT NULL,
+    PRIMARY KEY(cid)
+    );
+
+CREATE TABLE mark(
+    mid int NOT NULL AUTO_INCREMENT,
+    sid int NOT NULL,
+    cid int NOT NULL,
+    score int NOT NULL,
+    PRIMARY KEY(mid),
+    FOREIGN KEY(sid) REFERENCES student(sid),
+    FOREIGN KEY(cid) REFERENCES course(cid)
+    );
+
+INSERT INTO student VALUES(1,'Tom','male'),(2,'Jack','male'),(3,'Rose','female');
+
+INSERT INTO course VALUES(1,'math'),(2,'physics'),(3,'chemistry');
+
+INSERT INTO mark VALUES(1,1,1,80),(2,2,1,85),(3,3,1,90),(4,1,2,60),(5,2,2,90),(6,3,2,75),(7,1,3,95),(8,2,3,75),(9,3,3,85);
+```
+
+**实验四：** 使用连接查询的方式，查询出各员工所在部门的人数与工程数，工程数命名为 `count_project`。（连接 3 个表，并使用 `COUNT` 内置函数）
+
+```mysql
+SELECT name, people_num, COUNT(proj_name) AS count_project
+  FROM employee, department, project
+  WHERE in_dpt = dpt_name AND of_dpt = dpt_name
+  GROUP BY name, people_num;
+  
++------+------------+---------------+
+| name | people_num | count_project |
++------+------------+---------------+
+| Alex |         11 |             1 |
+| Jack |         12 |             2 |
+| Jim  |         11 |             1 |
+| Jobs |         12 |             2 |
+| Joe  |         12 |             2 |
+| Ken  |         11 |             1 |
+| Mary |         12 |             2 |
+| Mike |         15 |             2 |
+| Rick |         10 |             1 |
+| Rose |         10 |             1 |
+| Tom  |         15 |             2 |
+| Tony |         10 |             1 |
++------+------------+---------------+
+12 rows in set (0.01 sec)
+```
+
+从三张表选择三列数据；第三行设置三列数据的关系，`dpt_name` 是唯一值，`of_dpt` 和 `in_dpt` 的值必取自 `dpt_name` 这列，它们应该有外键关系，但不是必须的；第四行分组，分组不可或缺，否则会出现无意义的数据（一般来说连接查询语句中有 `COUNT` 就会有 `GROUP BY`），报一个 `sql_mode` 引起的错误，至于为什么选择 `name` 和 `people_num` 分组，大家可以试一下同时去掉 `COUNT` 和 `GROUP BY` 语句，看看其中的差异即可理解。
+
+**实验6：**建立员工名字 `employee.name` 和对应部门人数 `department.people_num` 的视图并展示。
+
+```mysql
+CREATE VIEW name_people_num (name, people_num)
+  AS SELECT name, people_num FROM employee, department
+  WHERE in_dpt = dpt_name;
+```
+
+```mysql
+SELECT * FROM name_people_num;
++------+------------+
+| name | people_num |
++------+------------+
+| Alex |         11 |
+| Ken  |         11 |
+| Mike |         11 |
+| Jack |         12 |
+| Jobs |         12 |
+| Joe  |         12 |
+| Mary |         12 |
+| Tony |         10 |
+| Rose |         10 |
+| Rick |         10 |
+| Tom  |         15 |
+| Jim  |         15 |
++------+------------+
+12 rows in set (0.00 sec)
+```
+
