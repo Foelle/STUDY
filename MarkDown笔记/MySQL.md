@@ -107,7 +107,7 @@ SHOW TABLE STATUS from mysql LIKE 'mysql%'\G;
 
 ### 二、创建数据库并插入数据
 
-#### 1.基本语法：
+#### 1.基本语句：
 
 ```mysql
 #创建数据库
@@ -235,7 +235,7 @@ ALTER City DROP DEFAULT;
 设置UNIQUE约束，该表中的指定列的值不能有重复值，否则插入数据时INSERT失败
 
 ```mysql
-#基本语法
+#基本语句
 UNIQUE(列名)
 #重命名UNIQUE约束且定义多个列的UNIQUE约束
 CONSTRAINT uc_PersonID UNIQUE (P_Id,LastName)
@@ -319,7 +319,7 @@ DROP FOREIGN KEY fk_PerOrders;
 SELECT语句用于从数据库选取数据。
 
 ```mysql
-#基本语法
+#基本语句
 SELECT 列名1,列名2 FROM 表名字 
 [WHERE Clause]
 [LIMIT number][OFFSET M]
@@ -335,7 +335,7 @@ WHERE 语句来包含任何条件， LIMIT 属性来设定返回的记录数，O
 SELECT DISTINCT 语句用于返回唯一不同的值，即去掉列的重复值，列出不同的值。
 
 ```mysql
-#基本语法
+#基本语句
 SELECT DISTINCT 列名1,列名2 FROM 表名;
 #实例
 SELECT DISTINCT country FROM Websites;
@@ -348,7 +348,7 @@ SELECT DISTINCT country FROM Websites;
 WHERE 子句用于提取那些满足指定条件的记录。
 
 ```mysql
-#基本语法
+#基本语句
 SELECT 列名1, field2 FROM 表名1, table_name2
 [WHERE condition1 [AND [OR]] condition2;
 ```
@@ -413,7 +413,7 @@ WHERE alexa > 15 AND (country='CN' OR country='USA');
 IN 操作符允许您在 WHERE 子句中规定多个值， **IN** 和 **NOT IN** 用于筛选“在”或"不在"某个范围内的结果
 
 ```mysql
-#基本语法
+#基本语句
 SELECT column_name(s) FROM table_name
 WHERE column_name IN (value1,value2,...);
 
@@ -438,7 +438,7 @@ WHERE in_dpt NOT IN ('dpt1','dpt3');
 LIKE 操作符用于在 WHERE 子句中搜索列中的指定模式
 
 ```mysql
-#基本语法
+#基本语句
 SELECT field1, field2,...fieldN FROM table_name
 WHERE field1 LIKE condition1 [AND [OR]] filed2 = 'somevalue'
 
@@ -479,7 +479,7 @@ WHERE name NOT REGEXP '^[A-H]';
 ORDER BY使用 ASC 或 DESC 关键字来设置查询结果是按升序或降序排列。 默认情况下，它是按升序排列，使用WHERE...LIKE子句来设置条件。
 
 ```mysql
-#基本语法
+#基本语句
 SELECT field1, field2,...fieldN FROM table_name1, table_name2...
 ORDER BY field1 [ASC [DESC][默认 ASC]], [field2...] [ASC [DESC][默认 ASC]]
 
@@ -526,7 +526,7 @@ MIN(salary) FROM employee;
 **GROUP BY** 语句根据一个或多个列对结果集进行分组，在分组的列上我们可以使用 COUNT, SUM, AVG,等函数。
 
 ```mysql
-#基本语法
+#基本语句
 SELECT column_name, function(column_name) 
 FROM table_name
 WHERE column_name operator value
@@ -615,3 +615,248 @@ ON employee.in_dpt = department.dpt_name
 ORDER BY id;
 ```
 
+### 五、数据库及表的修改和删除
+
+#### 1.删除数据库
+
+```mysql
+#显示所有数据库后删除特定数据库
+SHOW DATABASES;
+DROP DATABASE xxxx;
+```
+
+#### 2.对一张表的修改
+
+##### （1）重命名一张表
+
+```mysql
+#三种基本语句
+RENAME TABLE 原名 TO 新名字;
+ALTER TABLE 原名 RENAME 新名;
+ALTER TABLE 原名 RENAME TO 新名;
+
+#实例说明
+use mysql_shiyan;
+RENAME TABLE table_1 TO table_2;
+```
+
+##### （2）删除一张表
+
+```mysql
+#基本语句
+DROP TABLE 表名字;
+
+#实例说明
+DROP TABLE table_2;
+```
+
+#### 3.对一列的修改（即对表结构的修改）
+
+##### （1）增加一列
+
+```mysql
+#两种基本语句
+ALTER TABLE 表名字 ADD COLUMN 列名字 数据类型 约束;
+ALTER TABLE 表名字 ADD 列名字 数据类型 约束;
+
+#实例说明
+ALTER TABLE employee ADD height INT(4) DEFAULT 170;
+/*语句中的 INT(4) 不是表示整数的字节数，而是表示该值的显示宽度，如果设置填充字符为 0，则 170 显示为 0170*/
+```
+
+新增加的列，被默认放置在这张表的**最右边**。如果要把增加的列插入在指定位置，则需要在语句的最后**使用 AFTER** 关键词，如果想放在第一列的位置，则**使用 `FIRST`** 关键词。
+
+```mysql
+#指定增加列的插入某位置后面
+ALTER TALBLE employee ADD weight INT(4) DEFAULT 120 AFTER age;
+
+#指定插入第一列
+ALTE TABLE employee ADD test INT(10) DEFAULT 11 FIRST;
+```
+
+##### （2）删除一列
+
+```mysql
+#两种基本语句
+ALTER TABLE 表名字 DROP COLUMN 列名字;
+ALTER TABLE 表名字 DROP 列名字;
+
+#实例说明
+ALTER TABLE employee DROP test;
+```
+
+##### （3）重命名一列
+
+```mysql
+#基本语句
+ALTER TABLE 表名字 CHANGE 原列名 新列名 数据类型 约束;
+#这条重命名语句后面的 “数据类型” 不能省略，否则重命名失败
+
+#实例说明：“height” 一列重命名为汉语拼音 “shengao” 
+ALTER TABLE employee CHANGE height shengao INT(4) DEFAULT 170;
+```
+
+##### （4）改变数据类型
+
+**重命名CHANGE语句**可以修改一列的数据类型，只要原列名与新列名相同即可用于修改数据类型和约束。
+
+```mysql
+#基本语句
+ALTER TABLE 表名字 MODIFY 列名字 新数据类型;
+```
+
+#### 4.对表的内容修改
+
+##### （1）修改表中的某个值
+
+```mysql
+#基本语句
+UPDATE 表名字 SET 列1=值1,列2=值2 WHERE 条件;
+
+#Tom 的 age 改为 21，salary 改为 3000
+UPDATE employee SET age=21,salary=300 WHERE name='Tom';
+```
+
+##### （2）删除一行记录
+
+```mysql
+#基本语句
+DELETE FROM 表名字 WHERE 条件;
+
+#删除Tom的数据
+DELETE FROM employee WHERE name='Tom';
+```
+
+### 六、其它操作
+
+#### 1.索引
+
+索引是一种与表有关的结构，它的作用相当于书的目录，可以根据目录中的页码快速找到所需的内容。
+
+当表中有大量记录时，若要对表进行查询，没有索引的情况是全表搜索：将所有记录一一取出，和查询条件进行对比，然后返回满足条件的记录。这样做会执行大量磁盘 I/O 操作，并花费大量数据库系统时间。
+
+在表中已建立索引，在索引中找到符合查询条件的索引值，通过索引值就可以快速找到表中的数据，可以**大大加快查询速度**。
+
+```mysql
+#两种创建索引的基本语句
+ALTER TABLE 表名字 ADD INDEX 索引名 (列名);
+CREATE INDEX 索引名 ON 表名 (列名);
+
+##在employee表的id列上建立名为idx_id的索引
+ALTER TABLE employee ADD INDEX idx_id (id);  
+
+#在employee表的name列上建立名为idx_name的索引
+CREATE INDEX idx_name ON employee (name);   
+
+#查看新建的索引
+SHOW INDEX FROM 表名字;
+```
+
+使用 SELECT 语句查询的时候，语句中 WHERE 里面的条件，会**自动判断有没有可用的索引**。
+
+用户名(username)具有唯一性，并且格式具有较强的限制，我们可以给用户名加上一个唯一索引；一些字段不适合创建索引，比如性别，这个字段存在大量的重复记录无法享受索引带来的速度加成，甚至会拖累数据库，导致数据冗余和额外的 CPU 开销。
+
+#### 2.视图
+
+视图是从一个或多个表中导出来的表，是一种**虚拟存在的表**。
+
+- 数据库中只存放了视图的定义，而没有存放视图中的数据，这些**数据存放在原来的表中**；
+
+- 使用视图查询数据时，数据库系统会从原来的表中取出对应的数据；
+
+- **视图中的数据依赖于原来表中的数据**，一旦表中数据发生改变，显示在视图中的数据也会发生改变；
+
+- 在使用视图的时候，可以把它当作一张表。
+
+  ```mysql
+  #创建视图的基本语句
+  CREATE VIEW 视图名(列a,列b,列c) AS SELECT 列1,列2,列3 FROM 表名字;
+  ```
+
+  **视图也可以建立在多张表上**，只需在 SELECT 语句中使用**子查询**或**连接查询**。
+
+  ```mysql
+  #创建一个简单的视图，名为 v_emp，包含v_name，v_age，v_phone三个列
+  CREATE VIEW v_emp (v_name,v_age,v_phone) AS SELECT name,age,phone FROM employee;
+  ```
+
+#### 3.导入
+
+导入有**纯数据文件**导入和**SQL文件**导入，
+
+```mysql
+//导入SQL文件的语法，文件路径
+source *.sql
+```
+
+区别：数据文件导入方式只包含数据，导入规则由数据库系统完成；SQL 文件导入相当于执行该文件中包含的 SQL 语句，可以实现多种操作，包括删除，更新，新增，甚至对数据库的重建。
+
+数据文件的导入，可以把文件的数据保存进一张表。
+
+```mysql
+LOAD DATA INFILE '文件路径和文件名' INTO TABLE 表名字;
+```
+
+实际在mysql中进行导入导出操作，由于mysql的安全策略，必须在指定路径下进行。
+
+##### (1)在mysql终端查看路径变量
+
+```mysql
+mysql -uroot
+mysql> show variables like '%secure%';
++--------------------------+-----------------------+
+| Variable_name            | Value                 |
++--------------------------+-----------------------+
+| require_secure_transport | OFF                   |
+| secure_auth              | ON                    |
+| secure_file_priv         | /var/lib/mysql-files/ |
++--------------------------+-----------------------+
+3 rows in set (0.00 sec)
+```
+
+secure_file_priv 变量指定安全路径为`/var/lib/mysql-files/`  ，要导入数据文件，需要将该文件移动到安全路径下。
+
+##### （2）移动到安全路径下
+
+打开 Xfce 终端，输入命令拷贝 SQL6 文件夹到 `/var/lib/mysql-files/` 目录
+
+```bash
+sudo cp -a /home/shiyanlou/Desktop/SQL6 /var/lib/mysql-files/
+```
+
+使用命令 `sudo vim /var/lib/mysql-files/SQL6/in.txt` 查看 `in.txt` 文件中的内容：
+
+<img src="https://doc.shiyanlou.com/document-uid600404labid76timestamp1531869274599.png" alt="in.txt文件内容" style="zoom:70%;" />
+
+可以看到其中仅仅包含了数据本身，没有任何的 SQL 语句。
+
+##### （3）确认没有导入前的数据内容
+
+以 root 用户登录数据库，再连接 **mysql_shiyan** 数据库，查看没有导入数据之前，employee表中的数据
+
+```bash
+# 在Xfce 终端输入命令
+mysql -u root
+
+# 在 MySQL 控制台中输入命令
+use mysql_shiyan
+SELECT * FROM employee;
+```
+
+<img src="https://doc.shiyanlou.com/MySQL/sql-06-04.png" alt="img" style="zoom:80%;" />
+
+##### (4)执行导入语句
+
+```mysql
+LOAD DATA INFILE '/var/lib/mysql-files/SQL6/in.txt' INTO TABLE employee;
+```
+
+![img](https://doc.shiyanlou.com/document-uid600404labid76timestamp1529104481426.png)
+
+#### 4.导出
+
+
+
+#### 5.备份
+
+#### 6.恢复
